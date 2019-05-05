@@ -120,12 +120,31 @@
    ```
    oc apply -f direct-only-plan.yaml
    ```
-   
-3. Use the console to create a new address space (as a different user, e.g. developer) using this plan
+3. Check the plan is present
+   ```
+   oc get addressspaceschema standard -o jsonpath='{.spec.plans[*].name}' | xargs -n1 | sort
+   ```
+   should return something like the below (i.e. including the new plan)
+   ```
+   direct-only
+   standard-medium
+   standard-small
+   standard-unlimited
+   standard-unlimited-with-mqtt
+   ```
+4. Use the console to create a new address space (as a different user, e.g. developer) using this plan
 
 ![Create An Address Space](/images/create-direct.gif?raw=true)
 
+5. You can also delete plans
+   ```
+   oc delete addressspaceplan standard-unlimited-with-mqtt
+   ```
+   
+#### As a tenant, create an address space and send/receive messages
 
+Use the examples at https://github.com/EnMasseProject/enmasse-example-clients
+   
 
    
    
