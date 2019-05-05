@@ -53,7 +53,7 @@
    console   console-enmasse-infra.192.168.42.233.nip.io             console    https     reencrypt     None
    ```
    
-   For this example, the AMQ Console can be reached at `https:://console-enmasse-infra.192.168.42.233.nip.io`
+   For this example, the AMQ Console can be reached at `https://console-enmasse-infra.192.168.42.233.nip.io`
    
 #### Add Prometheus Monitoring and Grafana Dashboards
 
@@ -87,7 +87,7 @@
    oc delete project enmasse-monitoring
    oc new-project enmasse-monitoring
    oc apply -f install/components/monitoring-operator
-   ```![Alt text](/relative/path/to/img.jpg?raw=true "Optional Title")
+   ```
    
 #### Modify the Address Space Plans
    
