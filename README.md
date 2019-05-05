@@ -63,6 +63,7 @@
    
 4. Reinstall monitoring operator if necessary
    _(due to a race condition in the installation, the operator may need to be re-installed)_
+   
    a. check how many pods are running in the monitoring project
    ```
    oc get pods -n enmasse-monitoring
