@@ -43,6 +43,39 @@
    
 #### Add Prometheus Monitoring and Grafana Dashboards
 
+1. Update the monitoring bundle from this repository
+   ```
+   rm -rf install/bundles/monitoring
+   curl -L https://raw.githubusercontent.com/rgodfrey/summit-2019-workshop/master/updated-monitoring.tgz | tar xf -
+   ```
+   
+2. Install the monitoring operator
+   ```
+   oc new-project enmasse-monitoring
+   oc apply -f install/components/monitoring-operator
+   ```
+  
+3. Deploy the kube-state-metrics agent
+   ```
+   oc project enmasse-infra
+   oc apply -f install/components/kube-state-metrics
+   ```
+   
+4. Reinstall monitoring operator if necessary
+   _(due to a race condition in the installation, the operator may need to be re-installed)_
+   a. check how many pods are running in the monitoring project
+   ```
+   oc get pods -n enmasse-monitoring
+   ```
+   b. if only the two operator pods exist, then reinstall
+   ```
+   oc delete project enmasse-monitoring
+   oc new-project enmasse-monitoring
+   oc apply -f install/components/monitoring-operator
+   ```
+   
+
+
 
    
    
