@@ -41,6 +41,20 @@
    oc apply -f install/components/example-roles
    ```
    
+8. Get the console route, and note it down
+   ```
+   oc get route console
+   ```
+   
+   the output should look something like:
+   
+   ```
+   NAME      HOST/PORT                                     PATH      SERVICES   PORT      TERMINATION   WILDCARD
+   console   console-enmasse-infra.192.168.42.233.nip.io             console    https     reencrypt     None
+   ```
+   
+   For this example, the AMQ Console can be reached at `https:://console-enmasse-infra.192.168.42.233.nip.io`
+   
 #### Add Prometheus Monitoring and Grafana Dashboards
 
 1. Update the monitoring bundle from this repository
@@ -73,8 +87,43 @@
    oc delete project enmasse-monitoring
    oc new-project enmasse-monitoring
    oc apply -f install/components/monitoring-operator
+   ```![Alt text](/relative/path/to/img.jpg?raw=true "Optional Title")
+   
+#### Modify the Address Space Plans
+   
+1. Create a new file `direct-only-plan.yaml` with the following content
+
+   ```
+   apiVersion: admin.enmasse.io/v1beta2
+   kind: AddressSpacePlan
+   metadata:
+     name: direct-only
+     labels:
+       app: enmasse
+   spec:
+     displayName: Direct Only
+     displayOrder: 0
+     infraConfigRef: default
+     shortDescription: Messaging infrastructure based on Apache Qpid Dispatch Router and Apache ActiveMQ Artemis.
+     longDescription: Messaging infrastructure based on Apache Qpid Dispatch Router and Apache ActiveMQ Artemis. This plan allows up to 3 routers but does not allow for any store-and-forward addressing.
+     addressSpaceType: standard
+     resourceLimits:
+       router: 3.0
+       broker: 0.0
+       aggregate: 3.0
+     addressPlans:
+     - standard-small-anycast
+     - standard-small-multicast
    ```
    
+2. Create the plan
+   ```
+   oc apply -f direct-only-plan.yaml
+   ```
+   
+3. Use the console to create a new address space (as a different user, e.g. developer) using this plan
+
+![Create An Address Space](/images/create-direct.gif?raw=true)
 
 
 
